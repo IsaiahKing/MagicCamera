@@ -36,6 +36,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by why8222 on 2016/2/25.
  */
 public class MagicCameraView extends MagicBaseView {
+    private CameraActivityHelper mHelper = new CameraActivityHelper();
 
     private MagicCameraInputFilter cameraInputFilter;
     private MagicBeautyFilter beautyFilter;
@@ -144,6 +145,9 @@ public class MagicCameraView extends MagicBaseView {
         }
         videoEncoder.setTextureId(id);
         videoEncoder.frameAvailable(surfaceTexture);
+
+        //记录绘制帧数
+        mHelper.countDrawedFrame();
     }
 
     private SurfaceTexture.OnFrameAvailableListener onFrameAvailableListener = new SurfaceTexture.OnFrameAvailableListener() {
@@ -292,5 +296,32 @@ public class MagicCameraView extends MagicBaseView {
 
     public void onBeautyLevelChanged() {
         cameraInputFilter.onBeautyLevelChanged();
+    }
+
+
+    public CameraActivityHelper getHelper() {
+        return mHelper;
+    }
+
+    public class CameraActivityHelper {
+        private long coutingSec = 0;
+        private int lastDrawFrameCnt;
+        private int localDrawFrameCnt;
+
+        private void countDrawedFrame() {
+            long nowSec = System.currentTimeMillis() / 1000;
+            if (coutingSec == nowSec) {
+                localDrawFrameCnt++;
+            } else {
+                lastDrawFrameCnt = localDrawFrameCnt;
+
+                localDrawFrameCnt = 0;
+                coutingSec = nowSec;
+            }
+        }
+
+        public int getDrawFrameCount() {
+            return lastDrawFrameCnt;
+        }
     }
 }

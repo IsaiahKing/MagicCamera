@@ -11,10 +11,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,6 +39,7 @@ import java.util.Locale;
  * Created by why8222 on 2016/3/17.
  */
 public class CameraActivity extends Activity{
+    private MagicCameraView mCameraView;
     private LinearLayout mFilterLayout;
     private RecyclerView mFilterListView;
     private FilterAdapter mAdapter;
@@ -95,6 +99,25 @@ public class CameraActivity extends Activity{
             MagicFilterType.XPROII
     };
 
+    private Handler mLogInfoHandler = null;
+    private MagicCameraView.CameraActivityHelper helper = null;
+    private void logCameraInfo() {
+        mLogInfoHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (helper == null && mCameraView != null) {
+                    helper = mCameraView.getHelper();
+                }
+                if (helper != null) {
+                    Log.i("CameraInfo", "drawFPS " +
+                            helper.getDrawFrameCount());
+                }
+                sendEmptyMessageDelayed(0, 3000);
+            }
+        };
+        mLogInfoHandler.sendEmptyMessageDelayed(0, 3000);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +126,8 @@ public class CameraActivity extends Activity{
         magicEngine = builder
                 .build((MagicCameraView)findViewById(R.id.glsurfaceview_camera));
         initView();
+
+        logCameraInfo();
     }
 
     private void initView(){
@@ -132,11 +157,11 @@ public class CameraActivity extends Activity{
         animator.setRepeatCount(ValueAnimator.INFINITE);
         Point screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
-        MagicCameraView cameraView = (MagicCameraView)findViewById(R.id.glsurfaceview_camera);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) cameraView.getLayoutParams();
+        mCameraView = (MagicCameraView)findViewById(R.id.glsurfaceview_camera);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCameraView.getLayoutParams();
         params.width = screenSize.x;
         params.height = screenSize.x * 4 / 3;
-        cameraView.setLayoutParams(params);
+        mCameraView.setLayoutParams(params);
     }
 
     private FilterAdapter.onFilterChangeListener onFilterChangeListener = new FilterAdapter.onFilterChangeListener(){
