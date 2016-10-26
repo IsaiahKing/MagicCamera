@@ -25,6 +25,7 @@ import com.seu.magiccamera.adapter.FilterAdapter;
 import com.seu.magicfilter.MagicEngine;
 import com.seu.magicfilter.filter.helper.MagicFilterType;
 import com.seu.magicfilter.utils.MagicParams;
+import com.seu.magicfilter.widget.CameraGLSurfaceView;
 import com.seu.magicfilter.widget.MagicCameraView;
 
 import java.io.File;
@@ -101,7 +102,7 @@ public class CameraActivity extends Activity{
         setContentView(R.layout.activity_camera);
         MagicEngine.Builder builder = new MagicEngine.Builder();
         magicEngine = builder
-                .build((MagicCameraView)findViewById(R.id.glsurfaceview_camera));
+                .build((CameraGLSurfaceView)findViewById(R.id.glsurfaceview_camera));
         initView();
     }
 
@@ -132,7 +133,8 @@ public class CameraActivity extends Activity{
         animator.setRepeatCount(ValueAnimator.INFINITE);
         Point screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(screenSize);
-        MagicCameraView cameraView = (MagicCameraView)findViewById(R.id.glsurfaceview_camera);
+        //MagicCameraView cameraView = (MagicCameraView)findViewById(R.id.glsurfaceview_camera);
+        CameraGLSurfaceView cameraView = (CameraGLSurfaceView)findViewById(R.id.glsurfaceview_camera);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) cameraView.getLayoutParams();
         params.width = screenSize.x;
         params.height = screenSize.x * 4 / 3;

@@ -6,7 +6,7 @@ import com.seu.magicfilter.camera.CameraEngine;
 import com.seu.magicfilter.filter.helper.MagicFilterType;
 import com.seu.magicfilter.utils.MagicParams;
 import com.seu.magicfilter.helper.SavePictureTask;
-import com.seu.magicfilter.widget.MagicCameraView;
+import com.seu.magicfilter.widget.CameraGLSurfaceView;
 import com.seu.magicfilter.widget.base.MagicBaseView;
 
 import java.io.File;
@@ -38,19 +38,19 @@ public class MagicEngine {
     }
 
     public void startRecord(){
-        if(MagicParams.magicBaseView instanceof MagicCameraView)
-            ((MagicCameraView)MagicParams.magicBaseView).changeRecordingState(true);
+        if(MagicParams.magicBaseView instanceof CameraGLSurfaceView)
+            ((CameraGLSurfaceView)MagicParams.magicBaseView).changeRecordingState(true);
     }
 
     public void stopRecord(){
-        if(MagicParams.magicBaseView instanceof MagicCameraView)
-            ((MagicCameraView)MagicParams.magicBaseView).changeRecordingState(false);
+        if(MagicParams.magicBaseView instanceof CameraGLSurfaceView)
+            ((CameraGLSurfaceView)MagicParams.magicBaseView).changeRecordingState(false);
     }
 
     public void setBeautyLevel(int level){
-        if(MagicParams.magicBaseView instanceof MagicCameraView && MagicParams.beautyLevel != level) {
+        if(MagicParams.magicBaseView instanceof CameraGLSurfaceView && MagicParams.beautyLevel != level) {
             MagicParams.beautyLevel = level;
-            ((MagicCameraView) MagicParams.magicBaseView).onBeautyLevelChanged();
+            ((CameraGLSurfaceView) MagicParams.magicBaseView).onBeautyLevelChanged();
         }
     }
 

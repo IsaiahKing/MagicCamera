@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.seu.magicfilter.widget.MagicCameraView
+        <com.seu.magicfilter.widget.CameraGLSurfaceView
             android:id="@+id/glsurfaceview_camera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
